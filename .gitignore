@@ -1,1 +1,6 @@
 *.swp
+/kernel/*
+/bootloader/*
+/generated/*
+/precompiled/pic32fs
+

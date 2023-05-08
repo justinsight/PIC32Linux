@@ -7,7 +7,7 @@
 #
 # Author : Justin Newkirk
 # Date   : May 8, 2023
-# Project: Linux for PIC32.
+# Project: Linux for PIC32
 #
 
 
@@ -15,15 +15,13 @@
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-cd "$script_dir"
-
-
 # Give all the scripts the proper permissions.
 
 chmod +rwx "$script_dir"/*.sh
 
-
 # Install relevant pieces of software.
 
-sudo apt-get install gcc-mipsel-linux-gnu srecord
+sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make
+#sudo apt-get install gzip
+#sudo apt-get install make
 
