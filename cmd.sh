@@ -50,10 +50,44 @@
 
 # Get the directory path to the initialization script.
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/scripts"
 
+# Process the command line arguments.
 
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+        display_help
+        exit 0
+        ;;
+    -i|--initialize-simple)
+      
+        # Run initialization script.
+        "$scripts_dir"/initialize.sh
 
+        shift
+        ;;
+    -I|--initialize-advanced)
+
+        # Run initialization script.
+        "$scripts_dir"/initialize.sh --all
+
+        shift
+        ;;
+    -L --list-all)
+        
+        # Run list script.
+        "$scripts_dir"/list.sh --serial
+
+        shift
+        ;;
+    *)
+        echo "Error: Unsupported argument $1" >&2
+        display_help
+        exit 1
+        ;;
+  esac
+done
 
 
 # Function definitions =================================================================================================
@@ -64,7 +98,6 @@ error() {
     echo "ERROR - $1" >&2
     exit 1
 }
-
 
 
 # A help function that displays all the available commands for this script.
@@ -78,7 +111,7 @@ function display_help() {
     echo "                              the premade file system image."
     echo "  -I. --initialize-advanced   Performs the same actions as the --initialize-simple flag,"
     echo "                              but also downloads the Kernel and Bootloader source code."
-    echo "  -L --list-all               Specify a directory to process"
+    echo "  -L --list-all               Lists all relevant files that are needed for custom modifications"
     echo
     echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
     echo

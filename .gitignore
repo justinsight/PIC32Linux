@@ -1,6 +1,6 @@
 *.swp
 /kernel/*
-/bootloader/*
+/bootloader/u-boot-pic32
 /generated/*
 /precompiled/pic32fs
 

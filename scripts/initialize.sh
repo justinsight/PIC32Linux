@@ -4,6 +4,14 @@
 # This will install all relevant software for compilation, apply permissions for all scripts,
 # download the premade file system image, and download the source code for the bootloader and kernel.
 #
+# Usage:
+#   ./initialize.sh <flag>
+#
+# Flags:
+#
+#   -a --all
+#
+#       * This will download the source code for the bootloader and kernel.
 #
 # Author : Justin Newkirk
 # Date   : May 8, 2023
@@ -60,14 +68,28 @@ fi
 download_sources() {
 
     echo "==============================================================="
-    echo "Downloading bootloader source..."
-    cd "$script_dir"/../bootloader
-    git clone https://github.com/sergev/u-boot-pic32.git
 
-    echo "==============================================================="
-    echo "Downloading kernel source..."
-    cd "$script_dir"/../kernel
-    git clone https://github.com/sergev/linux-pic32.git
+    # Check if bootloader source exists and download if not.
+    if [ ! -d "$script_dir"/../bootloader/u-boot-pic32 ]; then
+        
+        echo "Downloading bootloader source..."
+        cd "$script_dir"/../bootloader
+        git clone https://github.com/sergev/u-boot-pic32.git
+    else
+
+        echo "Bootloader source already exists. Skipping download."
+    fi
+
+    # Check if kernel source exists and download if not.
+    if [ ! -d "$script_dir"/../kernel/linux-pic32 ]; then
+        
+        echo "Downloading kernel source..."
+        cd "$script_dir"/../kernel
+        git clone https://github.com/sergev/linux-pic32.git
+    else
+    
+        echo "Kernel source already exists. Skipping download."
+    fi
 }
 
 # A download function for the file system image.
