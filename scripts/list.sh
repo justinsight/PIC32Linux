@@ -55,25 +55,29 @@ list_serial(){
 
     echo "Files concerning serial communication: ==============================================="
     echo
-    echo "Bootloader UBoot"
-    echo
-    echo "  ./bootloader/u-boot-pic32/board/microchip/pic32mzda/pic32mzda.c"
-    echo "  ./bootloader/u-boot-pic32/mips/include/asm/arch-pic32/pic32.h"
-    echo "  ./bootloader/u-boot-pic32/include/configs/pic32mzdask.h"
-    echo "  ./bootloader/u-boot-pic32/drivers/serial/serial_pic32.c"
-    echo
-    echo "Linux Kernel"
+    echo "Bootloader UBoot ----------------------"
     echo
     echo "Changed:"
-    echo "arch/mips/pic32/pic32mzda/early_console.c"
-    echo "arch/mips/boot/dts/pic32/pic32mzda_sk.dts"
+    echo "  ./bootloader/u-boot-pic32/board/microchip/pic32mzda/pic32mzda.c"
+    echo "  ./bootloader/u-boot-pic32/arch/mips/include/asm/arch-pic32/pic32.h"
+    echo "  ./bootloader/u-boot-pic32/include/configs/pic32mzdask.h"
+    echo
+    echo "Useful:"
+    echo "  ./bootloader/u-boot-pic32/drivers/serial/serial_pic32.c"
+    echo
+    echo "Linux Kernel --------------------------"
+    echo
+    echo "Changed:"
+    echo "  ./kernel/linux-pic32/arch/mips/pic32/pic32mzda/early_console.c"
+    echo "  ./kernel/linux-pic32/arch/mips/boot/dts/pic32/pic32mzda_sk.dts"
     echo 
     echo "Useful:"
-    echo "drivers/tty/serial/pic32_uart.h"
-    echo "drivers/tty/serial/pic32_uart.c"
-    echo "arch/mips/pic32/pic32mzda/early_pin.h"
-    echo "arch/mips/include/asm/mach-pic32/pic32.h"
-    echo "arch/mips/boot/dts/pic32/pic32mzda.dtsi"
+    echo "  ./kernel/linux-pic32/drivers/tty/serial/pic32_uart.h"
+    echo "  ./kernel/linux-pic32/drivers/tty/serial/pic32_uart.c"
+    echo "  ./kernel/linux-pic32/arch/mips/pic32/pic32mzda/early_pin.h"
+    echo "  ./kernel/linux-pic32/arch/mips/include/asm/mach-pic32/pic32.h"
+    echo "  ./kernel/linux-pic32/arch/mips/boot/dts/pic32/pic32mzda.dtsi"
+    echo "  ./kernel/linux-pic32/arch/mips/pic32/pic32mzda/init.c"
     echo
 
 board/microchip/pic32mzda/pic32mzda.c
