@@ -52,11 +52,6 @@ list_serial(){
     echo "  ./kernel/linux-pic32/arch/mips/boot/dts/pic32/pic32mzda.dtsi"
     echo "  ./kernel/linux-pic32/arch/mips/pic32/pic32mzda/init.c"
     echo
-
-board/microchip/pic32mzda/pic32mzda.c
-arch/mips/include/asm/arch-pic32/pic32.h
-include/configs/pic32mzdask.h
-drivers/serial/serial_pic32.c
 }
 
 # An error function that takes in an error message, outputs to std_err and exits with error code 1.
