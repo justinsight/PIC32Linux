@@ -75,6 +75,10 @@ download_sources() {
         echo "Downloading bootloader source..."
         cd "$script_dir"/../bootloader
         git clone https://github.com/sergev/u-boot-pic32.git
+
+        # Update codebase with working code.
+
+        modify_bootloader
     else
 
         echo "Bootloader source already exists. Skipping download."
@@ -86,10 +90,56 @@ download_sources() {
         echo "Downloading kernel source..."
         cd "$script_dir"/../kernel
         git clone https://github.com/sergev/linux-pic32.git
+
+        # Update codebase with working code.
+
+        modify_kernel
     else
     
         echo "Kernel source already exists. Skipping download."
     fi
+}
+
+# A function for modifying the bootloader source code to the working code for the PIC32 MZ DA Curiosity Board.
+modify_bootloader() {
+
+    echo "Modify bootloader source code..."
+
+    # Remove old original files.
+
+    rm  "$script_dir"/../bootloader/u-boot-pic32/board/microchip/pic32mzda/pic32mzda.c \
+        "$script_dir"/../bootloader/u-boot-pic32/arch/mips/include/asm/arch-pic32/pic32.h \
+        "$script_dir"/../bootloader/u-boot-pic32/include/configs/pic32mzdask.h
+
+    # Replace original files with the working ones.
+
+    cp  "$script_dir"/../precompiled/modified/bootloader_serial/pic32mzda.c \
+        "$script_dir"/../bootloader/u-boot-pic32/board/microchip/pic32mzda/
+
+    cp  "$script_dir"/../precompiled/modified/bootloader_serial/pic32.h \
+        "$script_dir"/../bootloader/u-boot-pic32/arch/mips/include/asm/arch-pic32/
+
+    cp  "$script_dir"/../precompiled/modified/bootloader_serial/pic32mzdask.h \
+        "$script_dir"/../bootloader/u-boot-pic32/include/configs/
+}
+
+# a function for modifying the kernel source code to the working code for the PIC32 MZ DA Curiosity Board.
+modify_kernel(){
+
+    echo "Modify Kernel source code..."
+
+    # Remove old original files.
+
+    rm  "$script_dir"/../kernel/linux-pic32/arch/mips/pic32/pic32mzda/early_console.c \
+        "$script_dir"/../kernel/linux-pic32/arch/mips/boot/dts/pic32/pic32mzda_sk.dts
+
+    # Replace original files with the working ones.
+
+    cp  "$script_dir"/../precompiled/modified/kernel_serial/early_console.c \
+        "$script_dir"/../kernel/linux-pic32/arch/mips/pic32/pic32mzda/
+
+    cp  "$script_dir"/../precompiled/modified/kernel_serial/pic32mzda_sk.dts \
+        "$script_dir"/../kernel/linux-pic32/arch/mips/boot/dts/pic32/
 }
 
 # A download function for the file system image.

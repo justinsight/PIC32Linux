@@ -43,6 +43,13 @@
 #       * This will list all files that are relevant if the user is seeking to make custom modifications
 #         to the bootloader or kernel (say for remapping the UART pins).
 #
+#   -c --compile <argument>
+#       
+#       * This will compile the bootloader or kernel depending on the argument provided.
+#       * Valid arguments:
+#               'b' for bootloader
+#               'k' for kernel.
+#
 # Author : Justin Newkirk
 # Date   : May 8, 2023
 # Project: Linux for PIC32.
@@ -81,6 +88,36 @@ while (( "$#" )); do
 
         shift
         ;;
+    -c|--compile)
+
+        # Check if there is exactly one argument provided and exit with error if not.
+
+        if [ $# -ne 2 ]; then
+
+            error "Compile needs an additional argument. Use the -h or --help flag for more information."
+        fi
+
+        # Read flags and execute.
+
+        case "$2" in
+
+            b)
+                # Run bootloader compilation script.
+                "$scripts_dir"/compile_bootloader.sh
+
+                shift
+                ;;
+            k)
+                # Run kernel compilation script.
+                "$scripts_dir"/compile_kernel.sh
+
+                shift
+                ;;
+            *)
+                error "Invalid argument provided. Use the -h or --help flag for more information."
+                ;;
+        esac
+        ;;
     *)
         echo "Error: Unsupported argument $1" >&2
         display_help
@@ -111,7 +148,11 @@ function display_help() {
     echo "                              the premade file system image."
     echo "  -I. --initialize-advanced   Performs the same actions as the --initialize-simple flag,"
     echo "                              but also downloads the Kernel and Bootloader source code."
-    echo "  -L --list-all               Lists all relevant files that are needed for custom modifications"
+    echo "  -L --list-all               Lists all relevant files that are needed for custom modifications."
+    echo "  -c --compile <argument>     Compile the bootloader or kernel."
+    echo "                              Valid arguments:"
+    echo "                                  'b' for bootloader"
+    echo "                                  'k' for kernel."
     echo
     echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
     echo
