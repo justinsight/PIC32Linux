@@ -25,12 +25,19 @@ sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip
 
 # Download bootloader and kernel sources, then download the pic32fs image.
 
+echo "==============================================================="
+echo "Downloading bootloader source..."
 cd "$script_dir"/../bootloader
 git clone https://github.com/sergev/u-boot-pic32.git
 
+echo "==============================================================="
+echo "Downloading kernel source..."
 cd "$script_dir"/../kernel
 git clone https://github.com/sergev/linux-pic32.git
 
+echo "==============================================================="
+echo "Downloading file system image..."
 cd "script_dir"/../precompiled
-wget https://github.com/sergev/u-boot-pic32/files/3800047/u-boot-pic32.zip
-
+wget https://github.com/sergev/linux-pic32/releases/download/v1.1/pic32fs-minimal.zip
+unzip pic32fs-minimal.zip
+rm *.zip
