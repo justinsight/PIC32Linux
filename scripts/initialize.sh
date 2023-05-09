@@ -21,7 +21,16 @@ chmod +rwx "$script_dir"/*.sh
 
 # Install relevant pieces of software.
 
-sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make
-#sudo apt-get install gzip
-#sudo apt-get install make
+sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip
+
+# Download bootloader and kernel sources, then download the pic32fs image.
+
+cd "$script_dir"/../bootloader
+git clone https://github.com/sergev/u-boot-pic32.git
+
+cd "$script_dir"/../kernel
+git clone https://github.com/sergev/linux-pic32.git
+
+cd "script_dir"/../precompiled
+wget https://github.com/sergev/u-boot-pic32/files/3800047/u-boot-pic32.zip
 
