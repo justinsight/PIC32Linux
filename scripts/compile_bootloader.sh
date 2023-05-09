@@ -3,14 +3,8 @@
 #
 # This script will run the necessary commands for compiling the UBoot bootloader.
 #
-# WARNING - This file must be in the /bootloader directory to have any affect.
-#           If the ./cmd --initialize command was executed properly, then this will not be
-#           an issue.
-#
-#
 # Modified By: Justin Newkirk
 # Date       : May 8, 2023
-#
 #
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -36,7 +30,7 @@ USE_PRIVATE_LIBGCC=arch/mips/lib/libgcc.a CONFIG_USE_PRIVATE_LIBGCC=y
 ) | grep -v ':00000001FF' > u-boot.hex
 srec_cat -output - -intel u-boot.bin -binary -offset 0x1D004000 >> u-boot.hex
 
-# Copy the generated hex to the 'generated' directory.
+# Copy the generated hex to the 'generated' directory while deleting the old version.
 
 rm "$generated_dir"/u-boot.hex
 cp -p u-boot.hex "$generated_dir"/
