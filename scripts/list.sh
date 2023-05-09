@@ -26,7 +26,6 @@
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 
-
 # Check if there is exactly one argument provided and exit with error if not.
 
 if [ $# -ne 1 ]; then
@@ -38,10 +37,6 @@ fi
 
 case "$1" in
 
-    -h|--help)
-        display_help
-        exit 0
-        ;;
     -s|--serial)
         list_serial
         exit 0
@@ -55,6 +50,37 @@ esac
 
 # Function definitions =================================================================================================
 
+# This will list all the files that are relevant for remapping the UART pins for serial communication.
+list_serial(){
+
+    echo "Files concerning serial communication: ==============================================="
+    echo
+    echo "Bootloader UBoot"
+    echo
+    echo "  ./bootloader/u-boot-pic32/board/microchip/pic32mzda/pic32mzda.c"
+    echo "  ./bootloader/u-boot-pic32/mips/include/asm/arch-pic32/pic32.h"
+    echo "  ./bootloader/u-boot-pic32/include/configs/pic32mzdask.h"
+    echo "  ./bootloader/u-boot-pic32/drivers/serial/serial_pic32.c"
+    echo
+    echo "Linux Kernel"
+    echo
+    echo "Changed:"
+    echo "arch/mips/pic32/pic32mzda/early_console.c"
+    echo "arch/mips/boot/dts/pic32/pic32mzda_sk.dts"
+    echo 
+    echo "Useful:"
+    echo "drivers/tty/serial/pic32_uart.h"
+    echo "drivers/tty/serial/pic32_uart.c"
+    echo "arch/mips/pic32/pic32mzda/early_pin.h"
+    echo "arch/mips/include/asm/mach-pic32/pic32.h"
+    echo "arch/mips/boot/dts/pic32/pic32mzda.dtsi"
+    echo
+
+board/microchip/pic32mzda/pic32mzda.c
+arch/mips/include/asm/arch-pic32/pic32.h
+include/configs/pic32mzdask.h
+drivers/serial/serial_pic32.c
+}
 
 # An error function that takes in an error message, outputs to std_err and exits with error code 1.
 error() {
