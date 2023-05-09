@@ -15,6 +15,13 @@
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 generated_dir="$script_dir/../generated"
 
+# See whether the source files for the kernel exist.
+
+if [ ! -d "$script_dir"/../kernel/linux-pic32 ]; then
+    echo "ERROR - The source files for the kernel do not exist. Please run the initialization command first."
+    exit 1
+fi
+
 # Remove the previously generated kernel files.
 
 rm -r "$generated_dir"/boot

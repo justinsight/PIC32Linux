@@ -65,9 +65,13 @@ modify_kernel(){
 # A download function for the file system image.
 download_fs(){
 
+    echo
     echo "==============================================================="
+    echo
     echo "Downloading file system image..."
-    cd "script_dir"/../precompiled
+    echo
+
+    cd "$script_dir"/../precompiled
     wget https://github.com/sergev/linux-pic32/releases/download/v1.1/pic32fs-minimal.zip
     unzip pic32fs-minimal.zip
     rm *.zip
@@ -82,12 +86,16 @@ error() {
 # A download function bootloader and kernel sources.
 download_sources() {
 
+    echo
     echo "==============================================================="
 
     # Check if bootloader source exists and download if not.
     if [ ! -d "$script_dir"/../bootloader/u-boot-pic32 ]; then
         
+        echo
         echo "Downloading bootloader source..."
+        echo
+        
         cd "$script_dir"/../bootloader
         git clone https://github.com/sergev/u-boot-pic32.git
 
@@ -102,7 +110,10 @@ download_sources() {
     # Check if kernel source exists and download if not.
     if [ ! -d "$script_dir"/../kernel/linux-pic32 ]; then
         
+        echo
         echo "Downloading kernel source..."
+        echo
+        
         cd "$script_dir"/../kernel
         git clone https://github.com/sergev/linux-pic32.git
 
@@ -117,10 +128,14 @@ download_sources() {
 
 # Script Logic ========================================================================================================
 
+
 # Get the directory path to the initialization script.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+# Initialization finished message.
+
+initialize_finish=""
 
 # Check if there is more than one argument provided and exit with error if so.
 
@@ -140,6 +155,10 @@ if [ $# -eq 1 ]; then
     # Download the bootloader and kernel source code.
 
     download_sources
+
+    initialize_finish="Advanced"
+else
+    initialize_finish="Simple"
 fi
 
 # Give all the scripts the proper permissions.
@@ -159,3 +178,8 @@ else
 
     echo "File system image already exists. Skipping download."
 fi
+
+# Display the initialization finished message.
+
+echo "$initialize_finish initialization complete."
+echo

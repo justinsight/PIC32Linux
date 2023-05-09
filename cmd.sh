@@ -6,6 +6,8 @@
 #
 # This script will provide the following functionality:
 #
+#   * Behave like a terminal.
+#
 #	* Install all relevent tools that are needed for compilation
 #	  and related actions.
 #
@@ -18,8 +20,6 @@
 #	* Compile Boot Loader and Kernel.
 #
 #	* Reset changes made to either the boot loader source files, kernel source files, or both.
-#
-#		* WARNING - Only the predetermined files (found with ./cmd --list-relevant) will be reset.
 #
 #
 # Usage:
@@ -125,7 +125,7 @@ while true; do
     h|help)
         display_help
         ;;
-    -i|initialize-simple)
+    i|initialize-simple)
 
         # Run initialization script.
         "$scripts_dir"/initialize.sh
@@ -163,8 +163,7 @@ while true; do
         esac
         ;;
     *)
-        echo "Error: Unsupported argument $1" >&2
-        display_help
+        echo "Error: Unsupported argument '$1' - Use the h or help command for more information." >&2
         ;;
   esac
 done
