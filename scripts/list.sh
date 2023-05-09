@@ -8,7 +8,7 @@
 #
 # Usage:
 #
-#   ./list.sh <flag> <>
+#   ./list.sh <flag>
 #
 # Flags:
 #
@@ -20,33 +20,6 @@
 # Date   : May 9, 2023
 # Project: Linux for PIC32
 #
-
-# Get the directory path to the initialization script.
-
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-
-
-# Check if there is exactly one argument provided and exit with error if not.
-
-if [ $# -ne 1 ]; then
-
-    error "Need exactly one argument. Use the -h or --help flag for more information."
-fi
-
-# Read flags and execute.
-
-case "$1" in
-
-    -s|--serial)
-        list_serial
-        exit 0
-        ;;
-    *)
-        error "Invalid flag provided. Use the -h or --help flag for more information."
-        ;;
-
-esac
-
 
 # Function definitions =================================================================================================
 
@@ -91,3 +64,32 @@ error() {
     echo "ERROR - $1" >&2
     exit 1
 }
+
+
+# Script Logic ========================================================================================================
+
+# Get the directory path to the initialization script.
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+
+# Check if there is exactly one argument provided and exit with error if not.
+
+if [ $# -ne 1 ]; then
+
+    error "Need exactly one argument. Use the -h or --help flag for more information."
+fi
+
+# Read flags and execute.
+
+case "$1" in
+
+    -s|--serial)
+        list_serial
+        exit 0
+        ;;
+    *)
+        error "Invalid flag provided. Use the -h or --help flag for more information."
+        ;;
+
+esac

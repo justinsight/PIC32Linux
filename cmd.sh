@@ -55,6 +55,38 @@
 # Project: Linux for PIC32.
 #
 
+# Function definitions =================================================================================================
+
+# An error function that takes in an error message, outputs to std_err and exits with error code 1.
+
+error() {
+    echo "ERROR - $1" >&2
+    exit 1
+}
+
+# A help function that displays all the available commands for this script.
+
+function display_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Available options:"
+    echo "  -h, --help                  Show all the available options."
+    echo "  -i, --initialize-simple     Gives all scripts the proper permissions and downloads"
+    echo "                              the premade file system image."
+    echo "  -I. --initialize-advanced   Performs the same actions as the --initialize-simple flag,"
+    echo "                              but also downloads the Kernel and Bootloader source code."
+    echo "  -L --list-all               Lists all relevant files that are needed for custom modifications."
+    echo "  -c --compile <argument>     Compile the bootloader or kernel."
+    echo "                              Valid arguments:"
+    echo "                                  'b' for bootloader"
+    echo "                                  'k' for kernel."
+    echo
+    echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
+    echo
+}
+
+# Script Logic ========================================================================================================
+
 # Get the directory path to the initialization script.
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/scripts"
@@ -81,7 +113,7 @@ while (( "$#" )); do
 
         shift
         ;;
-    -L --list-all)
+    -L|--list-all)
         
         # Run list script.
         "$scripts_dir"/list.sh --serial
@@ -125,35 +157,3 @@ while (( "$#" )); do
         ;;
   esac
 done
-
-
-# Function definitions =================================================================================================
-
-
-# An error function that takes in an error message, outputs to std_err and exits with error code 1.
-error() {
-    echo "ERROR - $1" >&2
-    exit 1
-}
-
-
-# A help function that displays all the available commands for this script.
-
-function display_help() {
-    echo "Usage: $0 [OPTIONS]"
-    echo
-    echo "Available options:"
-    echo "  -h, --help                  Show all the available options."
-    echo "  -i, --initialize-simple     Gives all scripts the proper permissions and downloads"
-    echo "                              the premade file system image."
-    echo "  -I. --initialize-advanced   Performs the same actions as the --initialize-simple flag,"
-    echo "                              but also downloads the Kernel and Bootloader source code."
-    echo "  -L --list-all               Lists all relevant files that are needed for custom modifications."
-    echo "  -c --compile <argument>     Compile the bootloader or kernel."
-    echo "                              Valid arguments:"
-    echo "                                  'b' for bootloader"
-    echo "                                  'k' for kernel."
-    echo
-    echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
-    echo
-}
