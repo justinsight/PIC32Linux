@@ -18,7 +18,7 @@ generated_dir="$script_dir/../generated"
 # See whether the source files for the kernel exist.
 
 if [ ! -d "$script_dir"/../kernel/linux-pic32 ]; then
-    echo "ERROR - The source files for the kernel do not exist. Please run the initialization command first."
+    echo "ERROR - The source files for the kernel do not exist. Please run the advanced initialization command first."
     exit 1
 fi
 
@@ -36,7 +36,7 @@ cd "$script_dir"/../kernel/linux-pic32
 make ARCH=mips pic32mzda_defconfig
 make ARCH=mips CROSS_COMPILE=mipsel-linux-gnu-
 gzip -9 < arch/mips/boot/vmlinux.bin > arch/mips/boot/vmlinux.bin.gz
-../u-boot-pic32/tools/mkimage -A MIPS -a 0x88000000 -e 0x88000400 -d arch/mips/boot/vmlinux.bin.gz arch/mips/boot/vmlinux-pic32
+../../bootloader/u-boot-pic32/tools/mkimage -A MIPS -a 0x88000000 -e 0x88000400 -d arch/mips/boot/vmlinux.bin.gz arch/mips/boot/vmlinux-pic32
 mkdir -p "$generated_dir"/boot
 cp -a arch/mips/boot/vmlinux-pic32 "$generated_dir"/boot/vmlinux-pic32
 cp -a arch/mips/boot/dts/pic32/pic32mzda_sk.dtb "$generated_dir"/boot/pic32mzda.dtb

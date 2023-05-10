@@ -20,6 +20,12 @@
 
 # Function definitions =================================================================================================
 
+# An error function that takes in an error message, outputs to std_err and exits with error code 1.
+error() {
+    echo "ERROR - $1" >&2
+    exit 1
+}
+
 # A function for modifying the bootloader source code to the working code for the PIC32 MZ DA Curiosity Board.
 modify_bootloader() {
 
@@ -44,6 +50,8 @@ modify_bootloader() {
 }
 
 # a function for modifying the kernel source code to the working code for the PIC32 MZ DA Curiosity Board.
+#
+# Return: 1 if the download failed.
 modify_kernel(){
 
     echo "Modify Kernel source code..."
@@ -63,6 +71,10 @@ modify_kernel(){
 }
 
 # A download function for the file system image.
+#
+# It will attempt to download the file system image three times
+#
+# Return: 1 if the download failed.
 download_fs(){
 
     echo
@@ -71,16 +83,47 @@ download_fs(){
     echo "Downloading file system image..."
     echo
 
+    # Go to the precompiled directory.
+
     cd "$script_dir"/../precompiled
-    wget https://github.com/sergev/linux-pic32/releases/download/v1.1/pic32fs-minimal.zip
+
+    attempt=0
+    download_successful=1
+
+    while [ ! -f "$script_dir"/../precompiled/pic32fs-minimal.zip ] && [ $attempt -lt 3 ]; do
+
+        attempt=$(( attempt + 1 ))
+
+        # Display the attempt number if one attempt has already been made.
+
+        if [ $attempt -gt 1 ]; then
+
+            echo "Attempt $attempt..."
+        fi
+
+        # Try to download the file system image.
+
+        wget https://github.com/sergev/linux-pic32/releases/download/v1.1/pic32fs-minimal.zip
+
+        download_successful=$?
+
+        if [ ! -f "$script_dir"/../precompiled/pic32fs-minimal.zip ] || [ download_successful -ne 0 ]; then
+            
+            echo "Warning - File system image download failed..."
+        fi
+    done
+
+    # If the download failed, then return 1.
+
+    if [ download_successful -ne 0 ]; then
+
+        return 1
+    fi
+
+    # Unzip the file system image.
+
     unzip pic32fs-minimal.zip
     rm *.zip
-}
-
-# An error function that takes in an error message, outputs to std_err and exits with error code 1.
-error() {
-    echo "ERROR - $1" >&2
-    exit 1
 }
 
 # A download function bootloader and kernel sources.
@@ -89,6 +132,10 @@ download_sources() {
     echo
     echo "==============================================================="
 
+    # Initialize return value variable to 0.
+
+    return_val=0
+
     # Check if bootloader source exists and download if not.
     if [ ! -d "$script_dir"/../bootloader/u-boot-pic32 ]; then
         
@@ -96,12 +143,48 @@ download_sources() {
         echo "Downloading bootloader source..."
         echo
         
+        # Go to the bootloader directory.
+
         cd "$script_dir"/../bootloader
-        git clone https://github.com/sergev/u-boot-pic32.git
+        
+        # Attempt to clone the directory three times, printing the attempt count if more than one attempt is made,
+        # and set return value to 1 if the download failed.
 
-        # Update codebase with working code.
+        attempt=0
+        download_successful=1
 
-        modify_bootloader
+        while [ download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
+
+            attempt=$(( attempt + 1 ))
+
+            if [ $attempt -gt 1 ]; then
+
+                echo "Attempt $attempt..."
+            fi
+
+            git clone https://github.com/sergev/u-boot-pic32.git
+
+            # Check if git returned an error.
+
+            download_successful=$?
+
+            if [ download_successful -ne 0 ]; then
+
+                echo "Warning - Bootloader source download failed..."
+            fi
+        done
+
+        # If the download_success variable is 0, then run the modify_bootloader function.
+        # Otherwise, set the return value to 1.
+
+        if [ download_successful -eq 0 ]; then
+
+            # Update codebase with working code.
+            modify_bootloader
+        else
+
+            return_val=1
+        fi
     else
 
         echo "Bootloader source already exists. Skipping download."
@@ -113,17 +196,55 @@ download_sources() {
         echo
         echo "Downloading kernel source..."
         echo
-        
+
+        # Go to the kernel directory.
+
         cd "$script_dir"/../kernel
-        git clone https://github.com/sergev/linux-pic32.git
 
-        # Update codebase with working code.
+        # Attempt to clone the directory three times, printing the attempt count if more than one attempt is made,
+        # and set return value to 1 if the download failed.
 
-        modify_kernel
+        attempt=0
+        download_successful=1
+
+        while [ download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
+
+            attempt=$(( attempt + 1 ))
+
+            if [ $attempt -gt 1 ]; then
+
+                echo "Attempt $attempt..."
+            fi
+
+            git clone https://github.com/sergev/linux-pic32.git
+        
+            download_successful=$?
+
+            if [ download_successful -ne 0 ]; then
+
+                echo "Warning - Bootloader source download failed..."
+            fi
+        done
+
+        # If the download_success variable is 0, then run the modify_bootloader function.
+        # Otherwise, set the return value to 1.
+
+        if [ download_successful -eq 0 ]; then
+
+            # Update codebase with working code.
+            modify_kernel
+        else
+
+            return_val=$((return_val + 2))
+        fi
     else
     
         echo "Kernel source already exists. Skipping download."
     fi
+
+    # Return the return value.
+
+    return $return_val
 }
 
 # Script Logic ========================================================================================================
@@ -136,6 +257,10 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Initialization finished message.
 
 initialize_finish=""
+
+# Initialize the failure value to false.
+
+failure=false
 
 # Check if there is more than one argument provided and exit with error if so.
 
@@ -156,6 +281,26 @@ if [ $# -eq 1 ]; then
 
     download_sources
 
+    # Check (with a switch) return values (ranging from 0 to 3) to tell which or both downloads failed.
+
+    case $? in
+        1)
+            echo "ERROR - Bootloader source download failed. Please run the advanced initialization command again."
+            failure=true
+            ;;
+        2)
+            echo "ERROR - Kernel source download failed. Please run the advanced initialization command again."
+            failure=true
+            ;;
+        3)
+            echo "ERROR - Bootloader and kernel source download failed. Please run the advanced initialization command again."
+            failure=true
+            ;;
+        *)
+            echo "Bootloader and kernel source download successful."
+            ;;
+    esac
+
     initialize_finish="Advanced"
 else
     initialize_finish="Simple"
@@ -167,6 +312,8 @@ chmod +rwx "$script_dir"/*.sh
 
 # Install relevant pieces of software.
 
+echo "Installing relevant software..."
+echo
 sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip
 
 # Download the pic32fs image if it doesn't already exist. (Very expensive download.)
@@ -174,9 +321,28 @@ sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip
 if [ ! -f "$script_dir"/../precompiled/pic32fs.img ]; then
         
     download_fs
+
+    # Check if the download was successful.
+
+    if [ $? -ne 0 ]; then
+
+        echo "ERROR - File system image download failed. Please run the initialization command again."
+        failure=true
+    fi
 else
 
     echo "File system image already exists. Skipping download."
+fi
+
+# If the failure variable is true, then exit with error.
+
+if [ "$failure" = true ]; then
+
+    echo
+    echo "ERROR - Initialization encountered errors. Please run the initialization command again."
+    echo
+
+    exit 1
 fi
 
 # Display the initialization finished message.

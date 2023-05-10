@@ -2,5 +2,5 @@
 /kernel/*
 /bootloader/u-boot-pic32
 /generated/*
-/precompiled/pic32fs
+/precompiled/pic32fs.img
 

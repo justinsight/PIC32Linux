@@ -48,8 +48,12 @@
 #       
 #       * This will compile the bootloader or kernel depending on the argument provided.
 #       * Valid arguments:
-#               'b' for bootloader.
+#               '-b' for bootloader.
 #               'k' for kernel.
+#
+#   reset 
+#
+#       * This will delete all kernel/bootloader source files and the pic32fs image.
 #
 # Author : Justin Newkirk
 # Date   : May 8, 2023
@@ -62,7 +66,6 @@
 
 error() {
     echo "ERROR - $1" >&2
-    exit 1
 }
 
 # A help function that displays all the available commands for this script.
@@ -79,8 +82,9 @@ function display_help() {
     echo "  L, list-all              Lists all relevant files that are needed for custom modifications."
     echo "  c, compile <argument>    Compile the bootloader or kernel."
     echo "                              Valid arguments:"
-    echo "                                  'b' for bootloader"
-    echo "                                  'k' for kernel."
+    echo "                                  '-b' for bootloader"
+    echo "                                  '-k' for kernel."
+    echo " reset <argument>          Delete all kernel/bootloader source files pic32fs image."
     echo " exit, quit                Exit the terminal."
     echo
     echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
@@ -149,11 +153,11 @@ while true; do
 
         # Read flags and execute.
         case "$2" in
-            b)
+            -b)
                 # Run bootloader compilation script.
                 "$scripts_dir"/compile_bootloader.sh
                 ;;
-            k)
+            -k)
                 # Run kernel compilation script.
                 "$scripts_dir"/compile_kernel.sh
                 ;;
@@ -163,10 +167,12 @@ while true; do
         esac
         ;;
     *)
-        echo "Error: Unsupported argument '$1' - Use the h or help command for more information." >&2
+        error "Unsupported command '$1'. Use the h or help command for more information."
         ;;
   esac
 done
 
 # Display a farewell message
+echo
 echo "Goodbye!"
+echo
