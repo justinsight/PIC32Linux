@@ -92,7 +92,7 @@ download_fs(){
 
         attempt=$(( attempt + 1 ))
 
-        # Display the attempt number if one attempt has already been made.
+        # Display the attempt number if one attempt has already been made. 
 
         if [ $attempt -gt 1 ]; then
 
