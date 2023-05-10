@@ -11,46 +11,46 @@
 #
 
 # Set the desired label
-LABEL="pic32fs"
+label="pic32fs"
 
 # Check if blkid is installed
 command -v blkid >/dev/null 2>&1 || { echo >&2 "Error: blkid command not found. Please install it and try again."; exit 1; }
 
-echo "Attempting to mount MicroSD card with label '${LABEL}'..."
+echo "Attempting to mount MicroSD card with label '${label}'..."
 
 # Find the device with the specified label
-DEVICE=$(blkid | grep "LABEL=\"${LABEL}\"" | grep -o -E "/dev/[^:]*")
+device=$(blkid | grep "label=\"${label}\"" | grep -o -E "/dev/[^:]*")
 
-if [ -z "$DEVICE" ]; then
-  echo "Error: MicroSD card with label '${LABEL}' not found. Please check if the card is plugged in correctly and try again."
+if [ -z "$device" ]; then
+  echo "Error: MicroSD card with label '${label}' not found. Please check if the card is plugged in correctly and try again."
   exit 1
 fi
 
 # Get the current script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Create the mount point
-MOUNT_POINT="${SCRIPT_DIR}/pic32fs"
-mkdir -p "${MOUNT_POINT}"
+mount_point="${script_dir}/pic32fs"
+mkdir -p "${mount_point}"
 
 # Check if the partition is already mounted
-MOUNTED=$(mount | grep -o "^${DEVICE}")
+mounted=$(mount | grep -o "^${device}")
 
-if [ ! -z "$MOUNTED" ]; then
-  echo "Warning: Partition ${DEVICE} is already mounted. Attempting to unmount first."
-  sudo umount "${DEVICE}"
+if [ ! -z "$mounted" ]; then
+  echo "Warning: Partition ${device} is already mounted. Attempting to unmount first."
+  sudo umount "${device}"
   if [ $? -ne 0 ]; then
-    echo "Error: Failed to unmount partition ${DEVICE}. Please unmount it manually and try again."
+    echo "Error: Failed to unmount partition ${device}. Please unmount it manually and try again."
     exit 1
   fi
 fi
 
 # Mount the partition
-sudo mount "${DEVICE}" "${MOUNT_POINT}"
+sudo mount "${device}" "${mount_point}"
 if [ $? -ne 0 ]; then
-  echo "Error: Failed to mount partition ${DEVICE} to ${MOUNT_POINT}."
+  echo "Error: Failed to mount partition ${device} to ${mount_point}."
   exit 1
 fi
 
-echo "Successfully mounted partition ${DEVICE} to ${MOUNT_POINT}."
+echo "Successfully mounted partition ${device} to ${mount_point}."
 exit 0
