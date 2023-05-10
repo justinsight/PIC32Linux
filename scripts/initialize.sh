@@ -29,7 +29,7 @@ error() {
 # A function for modifying the bootloader source code to the working code for the PIC32 MZ DA Curiosity Board.
 modify_bootloader() {
 
-    echo "Modify bootloader source code..."
+    echo "Modifying bootloader source code..."
 
     # Remove old original files.
 
@@ -49,12 +49,10 @@ modify_bootloader() {
         "$script_dir"/../bootloader/u-boot-pic32/include/configs/
 }
 
-# a function for modifying the kernel source code to the working code for the PIC32 MZ DA Curiosity Board.
-#
-# Return: 1 if the download failed.
+# A function for modifying the kernel source code to the working code for the PIC32 MZ DA Curiosity Board.
 modify_kernel(){
 
-    echo "Modify Kernel source code..."
+    echo "Modifying Kernel source code..."
 
     # Remove old original files.
 
@@ -110,6 +108,11 @@ download_fs(){
         if [ ! -f "$script_dir"/../precompiled/pic32fs-minimal.zip ] || [ download_successful -ne 0 ]; then
             
             echo "Warning - File system image download failed..."
+            echo "Removing partial download..."
+
+            # Delete any of the partial downloads.
+
+            rm pic32fs-minimal.zip
         fi
     done
 
@@ -171,6 +174,11 @@ download_sources() {
             if [ download_successful -ne 0 ]; then
 
                 echo "Warning - Bootloader source download failed..."
+                echo "Removing partial download..."
+
+                # Delete the partial download.
+
+                rm -r u-boot-pic32
             fi
         done
 
@@ -223,6 +231,11 @@ download_sources() {
             if [ download_successful -ne 0 ]; then
 
                 echo "Warning - Bootloader source download failed..."
+                echo "Removing partial download..."
+
+                # Delete the partial download.
+
+                rm -r linux-pic32
             fi
         done
 
