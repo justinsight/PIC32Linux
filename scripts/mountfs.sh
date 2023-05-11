@@ -19,7 +19,7 @@ command -v blkid >/dev/null 2>&1 || { echo >&2 "Error: blkid command not found. 
 echo "Attempting to mount MicroSD card with label '${label}'..."
 
 # Find the device with the specified label
-device=$(blkid | grep "label=\"${label}\"" | grep -o -E "/dev/[^:]*")
+device=$(sudo blkid | grep "label=\"${label}\"" | grep -o -E "/dev/[^:]*")
 
 if [ -z "$device" ]; then
   echo "Error: MicroSD card with label '${label}' not found. Please check if the card is plugged in correctly and try again."
