@@ -21,7 +21,7 @@ function transfer() {
 
     # Check if the source file/directory exists.
     if [ ! -e $src ]; then
-        echo "Error: Source file/directory ("$src") does not exist"
+        echo "ERROR - Source file/directory ("$src") does not exist"
         return 1
     fi
 
@@ -40,7 +40,7 @@ function transfer() {
     if [ $? -eq 0 ]; then
         echo "Transfer successful"
     else
-        echo "Error: Transfer failed"
+        echo "ERROR - Transfer failed"
     fi
 }
 
@@ -103,7 +103,7 @@ case $flag in
 
         ;;
     *)
-        echo "Error: Invalid flag. Please use -g or -p."
+        echo "ERROR - Invalid flag. Please use -g or -p."
         exit 1
         ;;
 esac
