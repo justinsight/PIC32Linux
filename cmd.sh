@@ -19,41 +19,14 @@
 #
 #	* Compile Boot Loader and Kernel.
 #
-#	* Reset changes made to either the boot loader source files, kernel source files, or both.
-#
+#	* etc. See the help command for more information.
 #
 # Usage:
 #
-#	./cmd.sh
-#       Enter commands when prompted.
+#	./cmd.sh    Enter commands when prompted.
 #
 # Commands:
-#
-#	i, initialize-simple
-#
-#		* This will apply permissions for all scripts and download the premade and file system image.
-#		* Should be run at the beginning before anything else.
-#
-#   I, initialize-advanced
-#
-#       * This will perform the same actions as the --initialize-simple flag, but will also download
-#         the source code for the bootloader and kernel.
-#              
-#   L, list-all    
-#
-#       * This will list all files that are relevant if the user is seeking to make custom modifications
-#         to the bootloader or kernel (say for remapping the UART pins).
-#
-#   c, compile <argument>
-#       
-#       * This will compile the bootloader or kernel depending on the argument provided.
-#       * Valid arguments:
-#               '-b' for bootloader.
-#               'k' for kernel.
-#
-#   reset 
-#
-#       * This will delete all kernel/bootloader source files and the pic32fs image.
+#   h, help     Show all the available commands.
 #
 # Author : Justin Newkirk
 # Date   : May 8, 2023
@@ -74,18 +47,26 @@ function display_help() {
     echo "Usage: $0 [OPTIONS]"
     echo
     echo "Available options:"
-    echo "  h, help                  Show all the available options."
-    echo "  i, initialize-simple     Gives all scripts the proper permissions and downloads"
+    echo "  h, help                 Show all the available options."
+    echo "  i, initialize-simple    Gives all scripts the proper permissions and downloads"
     echo "                           the premade file system image."
-    echo "  I, initialize-advanced   Performs the same actions as the --initialize-simple flag,"
+    echo "  I, initialize-advanced  Performs the same actions as the --initialize-simple flag,"
     echo "                           but also downloads the Kernel and Bootloader source code."
     echo "  L, list-all              Lists all relevant files that are needed for custom modifications."
-    echo "  c, compile <argument>    Compile the bootloader or kernel."
+    echo "  c, compile <argument>   Compile the bootloader or kernel."
     echo "                              Valid arguments:"
     echo "                                  '-b' for bootloader"
     echo "                                  '-k' for kernel."
-    echo " reset <argument>          Delete all kernel/bootloader source files pic32fs image."
-    echo " exit, quit                Exit the terminal."
+    echo "  m, mountfs              Mount the pic32fs so changes can be made to it."
+    echo "  u, unmountfs            Unmount the pic32fs so it can be used to boot the board."
+    echo "  p, install-precompiled  Install the precompiled kernel and modules to the pic32fs."
+    echo "  g, install-generated    Install the generated kernel and modules to the pic32fs."
+    echo "  reset                   Delete all kernel/bootloader source files pic32fs image."
+    echo "                              Valid arguments:"
+    echo "                                  '-g' for generated (compiled) files."
+    echo "                                  '-s' for source code directories."
+    echo "                                  '-a' for all of the above and including the pic32fs image."
+    echo "  exit, quit              Exit the terminal."
     echo
     echo "For more information, open this script in a text editor of your choice and read the header comments for each command."
     echo
@@ -97,79 +78,120 @@ function display_help() {
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/scripts"
 
-# Process the command line arguments.
-
-#!/bin/bash
-
 # Display a welcome message
 echo "Welcome to the PIC32Linux project terminal! Type 'exit' or 'quit' to leave."
 echo "If you need help, type 'h' or 'help' for more information."
 echo
 
+# Launch a shell-like terminal.
 while true; do
-  # Display a prompt for user input
-  echo -n "linux-pic32> "
+    # Display a prompt for user input
+    echo -n "linux-pic32> "
 
-  # Read a line of input from the user
-  read user_input
+    # Read a line of input from the user
+    read user_input
 
-# Skip to the next iteration if the user input is empty
-  if [[ -z "$user_input" ]]; then
-    continue
-  fi
+    # Skip to the next iteration if the user input is empty
+    if [[ -z "$user_input" ]]; then
+        continue
+    fi
 
-  # Exit the loop if the user types 'exit' or 'quit'
-  if [[ "$user_input" == "exit" ]] || [[ "$user_input" == "quit" ]]; then
-    break
-  fi
+    # Exit the loop if the user types 'exit' or 'quit'
+    if [[ "$user_input" == "exit" ]] || [[ "$user_input" == "quit" ]]; then
+        break
+    fi
 
-  # Execute the user's input based on the command
-  set -- $user_input
-  case "$1" in
-    h|help)
-        display_help
-        ;;
-    i|initialize-simple)
+    # Execute the user's input based on the command
+    set -- $user_input
+    case "$1" in
+        h|help)
+            display_help
+            ;;
+        i|initialize-simple)
+            # Run initialization script.
 
-        # Run initialization script.
-        "$scripts_dir"/initialize.sh
-        ;;
-    I|initialize-advanced)
+            "$scripts_dir"/initialize.sh
+            ;;
+        I|initialize-advanced)
+            # Run initialization script.
 
-        # Run initialization script.
-        "$scripts_dir"/initialize.sh --all
-        ;;
-    L|list-all)
+            "$scripts_dir"/initialize.sh --all
+            ;;
+        L|list-all)
+            # Run list script.
 
-        # Run list script.
-        "$scripts_dir"/list.sh --serial
-        ;;
-    c|compile)
+            "$scripts_dir"/list.sh --serial
+            ;;
+        c|compile)
+            # Check if there is exactly one argument provided and exit with error if not.
 
-        # Check if there is exactly one argument provided and exit with error if not.
-        if [ $# -ne 2 ]; then
-            error "Compile needs an additional argument. Use the h or help command for more information."
-        fi
+            if [ $# -ne 2 ]; then
+                error "Compile needs an additional argument. Use the h or help command for more information."
+            fi
 
-        # Read flags and execute.
-        case "$2" in
-            -b)
-                # Run bootloader compilation script.
-                "$scripts_dir"/compile_bootloader.sh
-                ;;
-            -k)
-                # Run kernel compilation script.
-                "$scripts_dir"/compile_kernel.sh
-                ;;
-            *)
-                error "Invalid argument provided. Use the h or help command for more information."
-                ;;
-        esac
-        ;;
-    *)
-        error "Unsupported command '$1'. Use the h or help command for more information."
-        ;;
-  esac
+            # Read flags and execute.
+            case "$2" in
+                -b)
+                    # Run bootloader compilation script.
+                    "$scripts_dir"/compile_bootloader.sh
+                    ;;
+                -k)
+                    # Run kernel compilation script.
+                    "$scripts_dir"/compile_kernel.sh
+                    ;;
+                *)
+                    error "Invalid argument provided. Use the h or help command for more information."
+                    ;;
+            esac
+            ;;
+        m|mountfs)
+            # Run mount script.
+
+            "$scripts_dir"/mountfs.sh --mount
+            ;;
+        u|unmountfs)
+            # Run unmount script.
+
+            "$scripts_dir"/mountfs.sh --unmount
+            ;;
+        p|install-precompiled)
+            # Run install precompiled script.
+
+            "$scripts_dir"/install.sh --precompiled
+            ;;
+        g|install-generated)
+            # Run install generated script.
+
+            "$scripts_dir"/install.sh --generated
+            ;;
+        reset)
+            # Check if there is exactly one argument provided and exit with error if not.
+
+            if [ $# -ne 2 ]; then
+                error "Reset needs an additional argument. Use the h or help command for more information."
+            fi
+
+            # Read flags and execute.
+            case "$2" in
+                -g)
+                    # Delete generated (compiled) files.
+                    "$scripts_dir"/reset.sh --generated
+                    ;;
+                -s)
+                    # Delete all the source code directories.
+                    "$scripts_dir"/reset.sh --sources
+                    ;;
+                -a)
+                    # Run kernel compilation script.
+                    "$scripts_dir"/reset.sh --all
+                    ;;
+                *)
+                    error "Invalid argument provided. Use the h or help command for more information."
+                    ;;
+        *)
+            error "Unsupported command '$1'. Use the h or help command for more information."
+            ;;
+    esac
 done
 
 # Display a farewell message
