@@ -127,6 +127,7 @@ while true; do
 
             if [ $# -ne 2 ]; then
                 error "Compile needs an additional argument. Use the h or help command for more information."
+                continue
             fi
 
             # Read flags and execute.
@@ -168,7 +169,9 @@ while true; do
             # Check if there is exactly one argument provided and exit with error if not.
 
             if [ $# -ne 2 ]; then
+
                 error "Reset needs an additional argument. Use the h or help command for more information."
+                continue
             fi
 
             # Read flags and execute.
@@ -188,6 +191,8 @@ while true; do
                 *)
                     error "Invalid argument provided. Use the h or help command for more information."
                     ;;
+            esac
+            ;;
         *)
             error "Unsupported command '$1'. Use the h or help command for more information."
             ;;
@@ -198,3 +203,5 @@ done
 echo
 echo "Goodbye!"
 echo
+
+exit 0

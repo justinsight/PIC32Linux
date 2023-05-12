@@ -44,5 +44,5 @@ srec_cat -output - -intel u-boot.bin -binary -offset 0x1D004000 >> u-boot.hex
 
 # Copy the generated hex to the 'generated' directory while deleting the old version.
 
-rm "$generated_dir"/u-boot.hex
+rm "$generated_dir"/u-boot.hex 2> /dev/null
 cp -p u-boot.hex "$generated_dir"/

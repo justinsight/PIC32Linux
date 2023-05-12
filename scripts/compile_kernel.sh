@@ -24,8 +24,8 @@ fi
 
 # Remove the previously generated kernel files.
 
-rm -r "$generated_dir"/boot
-rm -r "$generated_dir"/lib
+rm -r "$generated_dir"/boot 2> /dev/null
+rm -r "$generated_dir"/lib 2> /dev/null
 
 # Go to the kernel directory to perform the compilation.
 

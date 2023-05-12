@@ -113,6 +113,10 @@ download_fs(){
             # Delete any of the partial downloads.
 
             rm pic32fs-minimal.zip
+        else
+            
+            download_successful=0
+            break
         fi
     done
 
@@ -156,7 +160,7 @@ download_sources() {
         attempt=0
         download_successful=1
 
-        while [ download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
+        while [ $download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
 
             attempt=$(( attempt + 1 ))
 
@@ -165,13 +169,21 @@ download_sources() {
                 echo "Attempt $attempt..."
             fi
 
+            echo "DEBUGGING: Attempting to clone..." # FOR TESTING
             git clone https://github.com/sergev/u-boot-pic32.git
+            echo "DEBUGGING: git clone returned $?"
 
             # Check if git returned an error.
 
             download_successful=$?
 
-            if [ download_successful -ne 0 ]; then
+            # FOR TESTING
+
+            echo
+            echo "DEBUGGING: download_successful = $download_successful"
+            echo
+
+            if [ $download_successful -ne 0 ]; then
 
                 echo "Warning - Bootloader source download failed..."
                 echo "Removing partial download..."
@@ -179,13 +191,15 @@ download_sources() {
                 # Delete the partial download.
 
                 rm -r u-boot-pic32
+            else
+                break
             fi
         done
 
         # If the download_success variable is 0, then run the modify_bootloader function.
         # Otherwise, set the return value to 1.
 
-        if [ download_successful -eq 0 ]; then
+        if [ $download_successful -eq 0 ]; then
 
             # Update codebase with working code.
             modify_bootloader
@@ -215,7 +229,7 @@ download_sources() {
         attempt=0
         download_successful=1
 
-        while [ download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
+        while [ $download_successful -ne 0 ] && [ $attempt -lt 3 ]; do
 
             attempt=$(( attempt + 1 ))
 
@@ -242,7 +256,7 @@ download_sources() {
         # If the download_success variable is 0, then run the modify_bootloader function.
         # Otherwise, set the return value to 1.
 
-        if [ download_successful -eq 0 ]; then
+        if [ $download_successful -eq 0 ]; then
 
             # Update codebase with working code.
             modify_kernel
@@ -351,7 +365,7 @@ fi
 
 if [ "$failure" = true ]; then
 
-    echo
+    echo "bonjour" # FOR TESTING
     echo "ERROR - Initialization encountered errors. Please run the initialization command again."
     echo
 
