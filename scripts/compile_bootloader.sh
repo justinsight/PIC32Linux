@@ -9,7 +9,7 @@
 #
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-generated_dir="$script_dir/../generated"
+generated_dir="$script_dir/../generated/"
 
 # See whether the source files for the bootloader exist.
 
@@ -20,7 +20,7 @@ fi
 
 # Remove the previously generated hex file.
 
-rm "$generated_dir"/u-boot.hex
+rm "$generated_dir"u-boot.hex
 
 # Go to the bootloader directory to perform the compilation.
 
