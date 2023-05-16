@@ -105,7 +105,7 @@ download_fs(){
 
         download_successful=$?
 
-        if [ ! -f "$script_dir"/../precompiled/pic32fs-minimal.zip ] || [ download_successful -ne 0 ]; then
+        if [ ! -f "$script_dir"/../precompiled/pic32fs-minimal.zip ] || [ $download_successful -ne 0 ]; then
             
             echo "Warning - File system image download failed..."
             echo "Removing partial download..."
@@ -122,7 +122,7 @@ download_fs(){
 
     # If the download failed, then return 1.
 
-    if [ download_successful -ne 0 ]; then
+    if [ $download_successful -ne 0 ]; then
 
         return 1
     fi
