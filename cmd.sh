@@ -78,6 +78,10 @@ function display_help() {
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/scripts"
 
+# Give the initialization script the proper permissions.
+
+chmod +x "$scripts_dir"/initialize.sh
+
 # Display a welcome message
 echo "Welcome to the PIC32Linux project terminal! Type 'exit' or 'quit' to leave."
 echo "If you need help, type 'h' or 'help' for more information."
