@@ -2,5 +2,6 @@
 /kernel/linux-pic32/
 /bootloader/u-boot-pic32/
 /generated/*
+!/generated/GeneratedNotes.txt
 /precompiled/pic32fs.img
 
