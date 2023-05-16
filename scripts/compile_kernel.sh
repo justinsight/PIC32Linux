@@ -40,7 +40,7 @@ gzip -9 < arch/mips/boot/vmlinux.bin > arch/mips/boot/vmlinux.bin.gz
 mkdir -p "$generated_dir"/boot
 cp -a arch/mips/boot/vmlinux-pic32 "$generated_dir"/boot/vmlinux-pic32
 cp -a arch/mips/boot/dts/pic32/pic32mzda_sk.dtb "$generated_dir"/boot/pic32mzda.dtb
-make ARCH=mips CROSS_COMPILE=mipsel-linux-gnu- INSTALL_MOD_PATH="$generated_dir"/.. modules_install
+make ARCH=mips CROSS_COMPILE=mipsel-linux-gnu- INSTALL_MOD_PATH="$generated_dir" modules_install
 
 
 #make ARCH=mips CROSS_COMPILE=mipsel-linux-gnu- INSTALL_MOD_PATH=$PWD/.. modules_install

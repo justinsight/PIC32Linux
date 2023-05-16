@@ -170,7 +170,7 @@ download_sources() {
             fi
 
             echo "DEBUGGING: Attempting to clone..." # FOR TESTING
-            git clone https://github.com/sergev/u-boot-pic32.git
+            git clone --depth 1 https://github.com/sergev/u-boot-pic32.git
             echo "DEBUGGING: git clone returned $?"
 
             # Check if git returned an error.
@@ -238,7 +238,7 @@ download_sources() {
                 echo "Attempt $attempt..."
             fi
 
-            git clone https://github.com/sergev/linux-pic32.git
+            git clone --depth 1 https://github.com/sergev/linux-pic32.git
         
             download_successful=$?
 
