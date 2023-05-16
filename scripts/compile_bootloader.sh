@@ -20,7 +20,7 @@ fi
 
 # Remove the previously generated hex file.
 
-rm "$generated_dir"u-boot.hex
+rm "$generated_dir"u-boot.hex 2> /dev/null
 
 # Go to the bootloader directory to perform the compilation.
 
