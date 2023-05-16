@@ -209,6 +209,8 @@ download_sources() {
         fi
     else
 
+        # Update codebase with working code.
+        modify_bootloader
         echo "Bootloader source already exists. Skipping download."
     fi
 
@@ -242,7 +244,7 @@ download_sources() {
         
             download_successful=$?
 
-            if [ download_successful -ne 0 ]; then
+            if [ $download_successful -ne 0 ]; then
 
                 echo "Warning - Bootloader source download failed..."
                 echo "Removing partial download..."
@@ -266,6 +268,8 @@ download_sources() {
         fi
     else
     
+        # Update codebase with working code.
+        modify_kernel
         echo "Kernel source already exists. Skipping download."
     fi
 
