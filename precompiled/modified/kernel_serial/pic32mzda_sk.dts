@@ -34,20 +34,20 @@
 
 		led@1 {
 			label = "pic32mzda_sk:red:led1";
-			gpios = <&pioH 0 GPIO_ACTIVE_HIGH>;
+			gpios = <&pioC 1 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
 
 		led@2 {
 			label = "pic32mzda_sk:yellow:led2";
-			gpios = <&pioH 1 GPIO_ACTIVE_HIGH>;
+			gpios = <&pioB 1 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "mmc0";
 		};
 
 		led@3 {
 			label = "pic32mzda_sk:green:led3";
-			gpios = <&pioH 2 GPIO_ACTIVE_HIGH>;
-			default-state = "on";
+			gpios = <&pioC 4 GPIO_ACTIVE_LOW>;
+			default-state = "off";
 		};
 	};
 
@@ -219,9 +219,9 @@
 	leds {
 
 		user_leds_s0: user_leds_s0 {
-			pic32,single-pins = <PORT_H 0 PIC32_PIN_CONF_DG_OUT
-				PORT_H 1 PIC32_PIN_CONF_DG_OUT
-				PORT_H 2 PIC32_PIN_CONF_DG_OUT>;
+			pic32,single-pins = <PORT_C 1 PIC32_PIN_CONF_DG_OUT
+				PORT_B 1 PIC32_PIN_CONF_DG_OUT
+				PORT_C 4 PIC32_PIN_CONF_DG_OUT>;
 		};
 	};
 

@@ -1,11 +1,15 @@
 #!/bin/bash
 
 #
+# This script will transfer compiled files from either the precompiled or generated 
+# to the mounted file system.
+# 
+# Author : Justin Newkirk
+# Date   : May 18, 2023
+# Project: Linux for PIC32
 #
-#
-#
-#
-#
+
+# Function Definitions ======================================================================================
 
 # Transfers either a file or directory to the specified destination directory.
 function transfer() {
@@ -43,6 +47,9 @@ function transfer() {
         echo "ERROR - Transfer failed"
     fi
 }
+
+
+# Script Logic ======================================================================================
 
 # Get the script's current directory
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -90,16 +97,16 @@ case $flag in
 
         # Transfer the boot and lib directories from the generated directory to the file system.
 
-        transfer "${scripts_dir}/../generated/boot" "${fs_dir}"
-        transfer "${scripts_dir}/../generated/lib/modules" "${fs_dir}/lib"
+        sudo transfer "${scripts_dir}/../generated/boot" "${fs_dir}"
+        sudo transfer "${scripts_dir}/../generated/lib/modules" "${fs_dir}/lib"
 
         ;;
     -p|--precompiled)
         # WARNING - this will assume that the boot and lib directories are in the precompiled directory.
         # Transfer the boot and lib directories from the precompiled directory to the file system.
 
-        transfer "${scripts_dir}/../precompiled/boot" "${fs_dir}"
-        transfer "${scripts_dir}/../precompiled/lib/modules" "${fs_dir}/lib"
+        sudo transfer "${scripts_dir}/../precompiled/boot" "${fs_dir}"
+        sudo transfer "${scripts_dir}/../precompiled/lib/modules" "${fs_dir}/lib"
 
         ;;
     *)
