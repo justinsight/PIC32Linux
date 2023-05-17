@@ -135,7 +135,7 @@ verify "Do these device details look correct? If yes, .img will be flashed"
 
 # Burn the image to the device
 echo "Burning image to the device: $new_device"
-dd if=$img_file of=$new_device bs=4M status=progress
+sudo dd if=$img_file of=$new_device bs=4M status=progress
 
 echo "Finished burning image to the device"
 
