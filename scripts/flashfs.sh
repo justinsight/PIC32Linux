@@ -109,7 +109,9 @@ fi
 # Give the user a welcome message.
 
 echo
-echo "Welcome to the .img flasher utility."
+echo "Welcome to the .img flasher utility!"
+echo
+echo "WARNING: This is a very powerful script, so please follow instructions carefully, otherwise severe system damage could potentially ensue."
 echo
 
 # Verify that the user does NOT have the MicroSD card plugged into the system.
@@ -120,15 +122,18 @@ detect_new_device
 
 # Show the device details
 
-# TODO: Make sure to show the device details from lsblk.
+echo "Device Details: "
+sudo lsblk | grep $( basename "$new_device" )
+echo
+
+
+# Double check with the user that they are sure that they want to write to thefound device.
+
+verify "Do these device details look correct? If yes, .img will be flashed"
 
 # FOR TESTING
 
 exit 0
-
-# Double check with the user that they are sure that they want to write to thefound device.
-
-verify ""
 
 # Burn the image to the device
 echo "Burning image to the device: $new_device"
