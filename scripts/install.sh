@@ -38,7 +38,7 @@ function transfer() {
     fi
 
     # Copy the source file/directory to the destination.
-    cp -R $src $dest
+    sudo cp -R $src $dest
 
     # Check the status of the copy operation.
     if [ $? -eq 0 ]; then
@@ -56,7 +56,7 @@ scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 fs_dir="${scripts_dir}/pic32fs"
 
 # Check if the file system has been mounted yet.
-if [ ! mountpoint -q "${fs_dir}" ]; then
+if $( ! mountpoint -q "${fs_dir}" ); then
 
     # Remove pic32fs directory if it exists and echo an error message how the user should use the mount command.
     if [ -d "${fs_dir}" ]; then
@@ -97,16 +97,16 @@ case $flag in
 
         # Transfer the boot and lib directories from the generated directory to the file system.
 
-        sudo transfer "${scripts_dir}/../generated/boot" "${fs_dir}"
-        sudo transfer "${scripts_dir}/../generated/lib/modules" "${fs_dir}/lib"
+        transfer "${scripts_dir}/../generated/boot" "${fs_dir}"
+        transfer "${scripts_dir}/../generated/lib/modules" "${fs_dir}/lib"
 
         ;;
     -p|--precompiled)
         # WARNING - this will assume that the boot and lib directories are in the precompiled directory.
         # Transfer the boot and lib directories from the precompiled directory to the file system.
 
-        sudo transfer "${scripts_dir}/../precompiled/boot" "${fs_dir}"
-        sudo transfer "${scripts_dir}/../precompiled/lib/modules" "${fs_dir}/lib"
+        transfer "${scripts_dir}/../precompiled/boot" "${fs_dir}"
+        transfer "${scripts_dir}/../precompiled/lib/modules" "${fs_dir}/lib"
 
         ;;
     *)
