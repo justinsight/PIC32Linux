@@ -34,7 +34,7 @@ function verify(){
 
 	attempt=0
 	user_input=""
-	while [[ "$attempt" -lt 3]]; do
+	while [[ "$attempt" -lt 3 ]]; do
 
 
         	attempt=$(( attempt + 1 ))
