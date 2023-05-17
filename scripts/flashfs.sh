@@ -45,7 +45,7 @@ function verify(){
 		# See if the user said no. Attempt three times to receive a 
 
     		if [[ "$user_input" == "n" ]] || [[ "$user_input" == "no" ]]; then
-        		echo "WARNING: Please follow the instruction and type 'y' or 'yes' after you have completed it."
+        		echo "WARNING - Please follow the instruction and type 'y' or 'yes' after you have completed it."
 			continue
     		fi
 
@@ -56,7 +56,7 @@ function verify(){
     		fi
 	done
 
-	echo "ERROR: Failed to verify. Flashfs failed, please run again."
+	echo "ERROR - Failed to verify. Flashfs failed, please run again."
 	echo 
 
 	exit 1
@@ -69,7 +69,9 @@ detect_new_device() {
 	initial_devices=$(lsblk -nrpo "name,type,size" | awk '$2=="disk"{print $1}')
 	
 	echo "Please insert the MicroSD Card into the computer."
-	echo	
+	echo
+	echo "WARNING - Do NOT insert any other device during this stage."	
+	echo
 	echo "Waiting for the device... (Will attempt for 30sec)"
 	
 	attempt=0
@@ -102,7 +104,7 @@ img_file="${scripts_dir}/../precompiled/pic32fs.img"
 
 # Check if the image file exists
 if [ ! -f "$img_file" ]; then
-  echo "ERROR: Image file does not exist. Please run the initialization script."
+  echo "ERROR - Image file does not exist. Please run the initialization script."
   exit 1
 fi
 
@@ -111,7 +113,7 @@ fi
 echo
 echo "Welcome to the .img flasher utility!"
 echo
-echo "WARNING: This is a very powerful script, so please follow instructions carefully, otherwise severe system damage could potentially ensue."
+echo "WARNING - This is a very powerful script, so please follow instructions carefully, otherwise severe system damage could potentially ensue."
 echo
 
 # Verify that the user does NOT have the MicroSD card plugged into the system.
@@ -130,10 +132,6 @@ echo
 # Double check with the user that they are sure that they want to write to thefound device.
 
 verify "Do these device details look correct? If yes, .img will be flashed"
-
-# FOR TESTING
-
-exit 0
 
 # Burn the image to the device
 echo "Burning image to the device: $new_device"
