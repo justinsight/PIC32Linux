@@ -55,6 +55,9 @@ function mountfs(){
         echo "ERROR - Failed to mount partition ${device} to ${fs_dir}."
         exit 1
     fi
+
+    # Give the user a successfully unmounted message.
+    echo "pic32fs succesfully mounted."
 }
 
 # This function will unmount the MicroSD card with the pic32fs label from the pic32fs directory.
@@ -69,6 +72,9 @@ function unmountfs() {
         echo "ERROR - The file system has not been mounted yet. Please run the mount command first."
         exit 1
     fi
+
+    # Give the user a successfully unmounted message.
+    echo "pic32fs succesfully unmounted."
 }
 
 # Script Logic ========================================================================================================
