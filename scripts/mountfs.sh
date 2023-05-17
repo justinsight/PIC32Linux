@@ -80,7 +80,7 @@ function unmountfs(){
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 fs_dir="${scripts_dir}/pic32fs"
 
-# Default to -p
+# Default to -m
 flag="-m"
 
 # Check if a flag was provided
