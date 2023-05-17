@@ -57,6 +57,7 @@ function display_help() {
     echo "                              Valid arguments:"
     echo "                                  '-b' for bootloader"
     echo "                                  '-k' for kernel."
+    echo "  f, flashfs		    Flash the pic32fs to a barely plugged in MicroSD Card (or normal USB)"
     echo "  m, mountfs              Mount the pic32fs so changes can be made to it."
     echo "  u, unmountfs            Unmount the pic32fs so it can be used to boot the board."
     echo "  p, install-precompiled  Install the precompiled kernel and modules to the pic32fs."
@@ -149,6 +150,10 @@ while true; do
                     ;;
             esac
             ;;
+	f|flashfs)
+
+            "$scripts_dir"/flashfs.sh
+	    ;;
         m|mountfs)
             # Run mount script.
 
