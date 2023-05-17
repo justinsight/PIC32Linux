@@ -58,20 +58,18 @@ function mountfs(){
 }
 
 # This function will unmount the MicroSD card with the pic32fs label from the pic32fs directory.
-function unmountfs(){
+function unmountfs() {
 
     # Check if the file system has been mounted yet.
-    if [ mountpoint -q "${fs_dir}" ]; then
+    if $(mountpoint -q "${fs_dir}"); then
 
         sudo umount "${fs_dir}"
         rm -rf "${fs_dir}"
     else
-
         echo "ERROR - The file system has not been mounted yet. Please run the mount command first."
         exit 1
     fi
 }
-
 
 # Script Logic ========================================================================================================
 
