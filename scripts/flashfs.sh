@@ -76,7 +76,7 @@ detect_new_device() {
   	
 	# Attempt to observe the new device for 30 seconds.
 	
-	while [[ "$attempt" -lt 30]]; do
+	while [[ "$attempt" -lt 30 ]]; do
 
     		sleep 1
 		
