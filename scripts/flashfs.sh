@@ -93,6 +93,37 @@ detect_new_device() {
 	echo "MicroSD Card detected: $new_device"
 }
 
+#
+# When given a device location (say /dev/sda), this will go to all the partitians (if there are any)
+# and unmount them from the system. This is important as not doing so could lead to problems when
+# the contents of this drive are completely destroyed and overwritten.
+#
+unmount_all(){
+
+	device=$( basename $1 )
+
+	# Unmount each partition of the device
+	for partition in /sys/block/${device}/${device}*
+	do
+  		partition_name=$(basename $partition)
+
+ 		if mount | grep $partition_name > /dev/null ; then
+  		
+    			echo "Unmounting /dev/$partition_name"
+    			sudo umount "/dev/$partition_name"
+    		
+			if [ $? -eq 0 ]; then
+      				echo "/dev/$partition_name successfully unmounted."
+    			else
+      				echo "Failed to unmount /dev/$partition_name. Please check manually."
+      				exit 1
+    			fi
+  		else
+    			echo "/dev/$partition_name was not mounted."
+  		fi
+	done
+}
+
 
 # Script Logic ==========================================================
 
@@ -128,10 +159,13 @@ echo "Device Details: "
 sudo lsblk | grep $( basename "$new_device" )
 echo
 
-
 # Double check with the user that they are sure that they want to write to thefound device.
 
 verify "Do these device details look correct? If yes, .img will be flashed"
+
+# Make sure that all the partitians from the device are unmounted before continuing.
+
+unmount_all "$new_device"
 
 # Burn the image to the device
 echo "Burning image to the device: $new_device"
