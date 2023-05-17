@@ -24,7 +24,7 @@ function mountfs(){
     echo "Attempting to mount MicroSD card with label '${label}'..."
 
     # Find the device with the specified label
-    device=$(sudo blkid | grep "label=\"${label}\"" | grep -o -E "/dev/[^:]*")
+    device=$(sudo blkid | grep "LABEL=\"${label}\"" | grep -o -E "/dev/[^:]*")
 
     if [ -z "$device" ]; then
         echo "ERROR - MicroSD card with label '${label}' not found. Please check if the card is plugged in correctly and try again."
@@ -32,8 +32,7 @@ function mountfs(){
     fi
 
     # Create the mount point
-    mount_point="${script_dir}/pic32fs"
-    mkdir -p "${mount_point}"
+    mkdir -p "${fs_dir}"
 
     # Check if the partition is already mounted
     mounted=$(mount | grep -o "^${device}")
@@ -50,10 +49,10 @@ function mountfs(){
     fi
 
     # Mount the partition
-    sudo mount "${device}" "${mount_point}"
+    sudo mount "${device}" "${fs_dir}"
     if [ $? -ne 0 ]; then
 
-        echo "ERROR - Failed to mount partition ${device} to ${mount_point}."
+        echo "ERROR - Failed to mount partition ${device} to ${fs_dir}."
         exit 1
     fi
 }
