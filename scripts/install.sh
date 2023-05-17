@@ -34,7 +34,7 @@ function transfer() {
 
     # If the destination file/directory exists, delete it
     if [ -e "$dest/$base" ]; then
-        rm -rf "$dest/$base"
+        sudo rm -rf "$dest/$base"
     fi
 
     # Copy the source file/directory to the destination.
@@ -61,7 +61,7 @@ if $( ! mountpoint -q "${fs_dir}" ); then
     # Remove pic32fs directory if it exists and echo an error message how the user should use the mount command.
     if [ -d "${fs_dir}" ]; then
 
-        rm -rf "${fs_dir}"
+        sudo rm -rf "${fs_dir}"
     fi
 
     echo "ERROR - The file system has not been mounted yet. Please run the mount command first."
