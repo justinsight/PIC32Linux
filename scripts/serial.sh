@@ -108,5 +108,5 @@ echo "Connecting to $device at 115200 baud..."
 
 sleep 1
 
-screen $device 115200,cs8,-parenb,-cstopb,-hupcl
+sudo screen $device 115200,cs8,-parenb,-cstopb,-hupcl
 
