@@ -64,9 +64,7 @@ function detect_new_device() {
     	# Tell the user to plug in the microcontroller again.
 
 	echo "Please plug in the Curiosity board into the computer."
-	echo
 	echo "WARNING - Do NOT insert any other device during this stage."	
-	echo
 	echo "Waiting for the device... (Will attempt for 30sec)"
     
     	# Check for the new device 30 times (ie, for 30 seconds). 
@@ -95,29 +93,20 @@ function detect_new_device() {
     	echo $new_device
 }
 
-# Get the name of the USB device
-default_device=$(ls /dev | grep ttyACM)
+# Script Logic ============================================================
 
-# If no device is found, attempt to detect it
-if [ -z "$default_device" ]; then
-	
-	echo "Default serial device was not found."
-	echo "Searching... Please follow the instructions provided."
+echo "Please follow the instructions provided."
 
-	# Will automatically exit with an error if no device was found.
-	detect_new_device
-fi
+# Will automatically exit with an error if no device was found.
+detect_new_device
 
 # Prepend /dev/ to the device name.
 device="/dev/$new_device"
 
-
-# FOR TESTING
-echo "TESTING - The device we're about to connect to is: ${device}"
-exit 0
-
 # Connect to the device using the screen command.
 echo "Connecting to $device at 115200 baud..."
+
+sleep 1
 
 screen $device 115200,cs8,-parenb,-cstopb,-hupcl
 
