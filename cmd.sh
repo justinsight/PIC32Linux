@@ -62,6 +62,7 @@ function display_help() {
     echo "  u, unmountfs            Unmount the pic32fs so it can be used to boot the board."
     echo "  p, install-precompiled  Install the precompiled kernel and modules to the pic32fs."
     echo "  g, install-generated    Install the generated kernel and modules to the pic32fs."
+    echo "  s, serial		    Connect to the Curiosity Board via serial communication."
     echo "  reset                   Delete all kernel/bootloader source files pic32fs image."
     echo "                              Valid arguments:"
     echo "                                  '-g' for generated (compiled) files."
@@ -174,6 +175,11 @@ while true; do
 
             "$scripts_dir"/install.sh --generated
             ;;
+        s|serial)
+	    # Connect to Curiosity Board via Serial communication.
+
+	    "$scripts_dir"/serial.sh
+	    ;;
         reset)
             # Check if there is exactly one argument provided and exit with error if not.
 
