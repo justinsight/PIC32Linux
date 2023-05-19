@@ -4,4 +4,4 @@
 /generated/*
 !/generated/GeneratedNotes.txt
 /precompiled/pic32fs.img
-
+/scripts/*.swo
