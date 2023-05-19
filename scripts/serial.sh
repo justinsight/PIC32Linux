@@ -75,7 +75,7 @@ function detect_new_device() {
         	after=$(ls /dev)
 
         	# Find differences
-        	new_device=$(comm -13 <(sort <(echo "$before")) <(sort <(echo "$after")))
+        	new_device=$(comm -13 <(sort <(echo "$before")) <(sort <(echo "$after")) | tail -n 1)
 
         	# If a new device is found, break the loop
         	if [ ! -z "$new_device" ]; then
@@ -88,14 +88,13 @@ function detect_new_device() {
         	echo "No new USB device detected. Please try again."
         	exit 1
     	fi
-	
-    	# Return the name of the new device
-    	echo $new_device
 }
 
 # Script Logic ============================================================
 
 echo "Please follow the instructions provided."
+
+new_device=""
 
 # Will automatically exit with an error if no device was found.
 detect_new_device
