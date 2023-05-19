@@ -54,7 +54,7 @@ function verify(){
 
 # This will allow us to detect the newly plugged in Curiosity Board if the default name was not in fact
 # found already.
-detect_new_device() {
+function detect_new_device() {
 
     	verify "Please ensure that the microntroller is unplugged."
 

@@ -63,7 +63,7 @@ function verify(){
 }
 
 # Function to detect new device
-detect_new_device() {
+function detect_new_device() {
 	
 	# Initial scan of the block devices
 	initial_devices=$(lsblk -nrpo "name,type,size" | awk '$2=="disk"{print $1}')
