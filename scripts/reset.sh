@@ -92,7 +92,7 @@ function restore_kernel_files(){
 	
 	# Copy the files from the "original" directory to the "kernel_serial" directory.
 	kernel_serial_dir="${scripts_dir}/../precompiled/modified/kernel_serial/"
-	sudo cp "${kernel_serial_dir}original/*" "${kernel_serial_dir}" 
+	sudo cp "${kernel_serial_dir}original/"* "${kernel_serial_dir}" 
 }
 
 
@@ -101,7 +101,7 @@ function restore_bootloader_files(){
 	
 	# Copy the files from the "original" directory to the "kernel_serial" directory.
 	bootloader_serial_dir="${scripts_dir}/../precompiled/modified/bootloader_serial/"
-	sudo cp "${bootloader_serial_dir}original/*" "${bootloader_serial_dir}" 
+	sudo cp "${bootloader_serial_dir}original/"* "${bootloader_serial_dir}" 
 }
 
 # Script Logic ========================================================================================================
