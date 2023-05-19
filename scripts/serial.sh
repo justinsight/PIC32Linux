@@ -111,8 +111,13 @@ fi
 # Prepend /dev/ to the device name.
 device="/dev/$new_device"
 
-# Connect to the device using the screen command.
-echo "Connecting to $new_device at 115200 baud..."
 
-screen $new_device 115200,cs8,-parenb,-cstopb,-hupcl
+# FOR TESTING
+echo "TESTING - The device we're about to connect to is: ${device}"
+exit 0
+
+# Connect to the device using the screen command.
+echo "Connecting to $device at 115200 baud..."
+
+screen $device 115200,cs8,-parenb,-cstopb,-hupcl
 
