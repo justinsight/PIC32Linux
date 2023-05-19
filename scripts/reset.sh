@@ -87,6 +87,23 @@ function delete_filesystem_image(){
     return 0
 }
 
+# This function will return the modified kernel files back to the originals that came with the repository.
+function restore_kernel_files(){
+	
+	# Copy the files from the "original" directory to the "kernel_serial" directory.
+	kernel_serial_dir="${scripts_dir}/../precompiled/modified/kernel_serial/"
+	sudo cp "${kernel_serial_dir}original/*" "${kernel_serial_dir}" 
+}
+
+
+# This function will return the modified bootloader files back to the originals that came with the repository.
+function restore_bootloader_files(){
+	
+	# Copy the files from the "original" directory to the "kernel_serial" directory.
+	bootloader_serial_dir="${scripts_dir}/../precompiled/modified/bootloader_serial/"
+	sudo cp "${bootloader_serial_dir}original/*" "${bootloader_serial_dir}" 
+}
+
 # Script Logic ========================================================================================================
 
 # Get the script directory.
@@ -108,6 +125,17 @@ fi
 
 # Handle the flag with a case statement
 case $1 in
+    -k|--modified-kernel-files)
+	    # Restore the modified kernel files (that the user touched) to the original that came with repository.
+
+	    restore_kernel_files
+	    ;;
+	    
+    -b|--modified-bootloader-files)
+	    # Restore the modified kernel files (that the user touched) to the original that came with repository.
+
+	    restore_bootloader_files
+	    ;;
     -g|--generated)
         # Delete the generated files.
 

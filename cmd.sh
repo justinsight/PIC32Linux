@@ -65,6 +65,8 @@ function display_help() {
     echo "  s, serial		    Connect to the Curiosity Board via serial communication."
     echo "  reset                   Delete all kernel/bootloader source files pic32fs image."
     echo "                              Valid arguments:"
+    echo "                                  '-b' for user modified bootloader source files"
+    echo "                                  '-k' for user modified kernel source files"
     echo "                                  '-g' for generated (compiled) files."
     echo "                                  '-s' for source code directories."
     echo "                                  '-a' for all of the above and including the pic32fs image."
@@ -191,6 +193,15 @@ while true; do
 
             # Read flags and execute.
             case "$2" in
+		    
+                -b)
+                    # Restore to original modified bootloader files. 
+                    "$scripts_dir"/reset.sh --modified-bootloader-files
+                    ;;
+                -k)
+                    # Restore to original modified bootloader files. 
+                    "$scripts_dir"/reset.sh --modified-kernel-files
+                    ;;
                 -g)
                     # Delete generated (compiled) files.
                     "$scripts_dir"/reset.sh --generated
