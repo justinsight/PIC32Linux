@@ -345,7 +345,7 @@ chmod +rwx "$script_dir"/*.sh
 
 echo "Installing relevant software..."
 echo
-sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip
+sudo apt-get install gcc-mipsel-linux-gnu srecord gzip make git wget unzip screen
 
 # Download the pic32fs image if it doesn't already exist. (Very expensive download.)
 
