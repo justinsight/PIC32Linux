@@ -96,23 +96,23 @@ function detect_new_device() {
 }
 
 # Get the name of the USB device
-device=$(ls /dev | grep ttyACM)
+default_device=$(ls /dev | grep ttyACM)
 
 # If no device is found, attempt to detect it
-if [ -z "$device" ]; then
+if [ -z "$default_device" ]; then
 	
 	echo "Default serial device was not found."
 	echo "Searching... Please follow the instructions provided."
 
 	# Will automatically exit with an error if no device was found.
-	device=$(detect_new_device)
+	detect_new_device
 fi
 
 # Prepend /dev/ to the device name.
-device="/dev/$device"
+device="/dev/$new_device"
 
 # Connect to the device using the screen command.
-echo "Connecting to $device at 115200 baud..."
+echo "Connecting to $new_device at 115200 baud..."
 
-screen $device 115200,cs8,-parenb,-cstopb,-hupcl
+screen $new_device 115200,cs8,-parenb,-cstopb,-hupcl
 
