@@ -92,7 +92,7 @@
 	mac-address = [00 00 00 00 00 00];
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eth0>;
-	reset-gpio = <&pioJ 15 0>;
+	reset-gpio = <&pioE 1 0>;
 	status = "okay";
 };
 
@@ -122,8 +122,8 @@
 	status = "okay";
 
 	usb_overcurrent@0 {
-		interrupt-parent = <&pioB>;
-		interrupts = <11 PIC32_CN_FALLING>;
+		interrupt-parent = <&pioH>;
+		interrupts = <2 PIC32_CN_FALLING>;
 	};
 };
 
@@ -154,7 +154,7 @@
 
 	usb1 {
 		pinctrl_usb1: usb1_oc-0 {
-			pic32,single-pins = <PORT_B 11 PIC32_PIN_CONF_DG_IN>;
+			pic32,single-pins = <PORT_H 2 PIC32_PIN_CONF_DG_IN>;
 		};
 	};
 
@@ -212,7 +212,7 @@
 				<PORT_J 9 PIC32_PIN_CONF_DG>,
 				<PORT_J 8 PIC32_PIN_CONF_DG>,
 				<PORT_J 1 PIC32_PIN_CONF_DG>,
-				<PORT_J 15 PIC32_PIN_CONF_DG_OUT>;
+				<PORT_E 1 PIC32_PIN_CONF_DG_OUT>;
 		};
 	};
 
