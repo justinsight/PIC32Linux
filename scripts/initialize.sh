@@ -169,19 +169,11 @@ download_sources() {
                 echo "Attempt $attempt..."
             fi
 
-            echo "DEBUGGING: Attempting to clone..." # FOR TESTING
             git clone --depth 1 https://github.com/sergev/u-boot-pic32.git
-            echo "DEBUGGING: git clone returned $?"
 
             # Check if git returned an error.
 
             download_successful=$?
-
-            # FOR TESTING
-
-            echo
-            echo "DEBUGGING: download_successful = $download_successful"
-            echo
 
             if [ $download_successful -ne 0 ]; then
 

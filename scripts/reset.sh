@@ -1,9 +1,14 @@
 #!/bin/bash
 
 #
+# This script offers some basic reset functionality, ranging from reset the compiled bootloader/kernel,
+# deleting the downloaded sources, to deleting the downloaded file system image. 
 #
+# Please run the help command to see the available flags for this script or read below.
 #
-#
+# Author : Justin Newkirk
+# Date   : May 18, 2023
+# Project: Linux on PIC32
 #
 
 # Function definitions =================================================================================================

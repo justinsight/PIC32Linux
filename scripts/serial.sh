@@ -1,15 +1,17 @@
 #!/bin/bash
 
-
-# A simple function that is used to verify a user's acknowledgement.
-# Primarily used to make sure that a user has completed an important
-# step in the process.
+# 
+# This file contains the script that will automatically find the plugged in Curiosity Board in devices
+# and then connect to it using serial.
+# It is very important that the instructions provided by this script be followed very carefully as there
+# are some commands within that, if run improperly and at the wrong time, could cause issues.
 #
-# Will return a 0 if verified; 1 otherwise.
+# Author : Justin Newkirk
+# Date   : May 18, 2023
+# Project: Linux on PIC32
 #
 
 # Function Definitions ==================================================
-
 
 # A simple function that is used to verify a user's acknowledgement.
 # Primarily used to make sure that a user has completed an important
@@ -69,8 +71,6 @@ function detect_new_device() {
     
     	# Check for the new device 30 times (ie, for 30 seconds). 
     	for (( i=1; i<=30; i++ )); do
-        	sleep 1
-	
 		# Compare the state of /dev before and after.
         	after=$(ls /dev)
 
